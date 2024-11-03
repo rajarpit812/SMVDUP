@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World - C Programming</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        pre {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hello World in C</h1>
+    <h2>Code:</h2>
+    <pre>
+#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+    </pre>
+    <h2>Output:</h2>
+    <pre>
+Hello, World!
+    </pre>
+    <button onclick="runCode()">Run Code</button>
+    <h2>Compiler Output:</h2>
+    <pre id="compilerOutput"></pre>
+
+    <script>
+        function runCode() {
+            // Here you would integrate with an online compiler API
+            document.getElementById('compilerOutput').innerText = 'Output will be displayed here...'; // Placeholder
+        }
+    </script>
+    <a href="c.html">Back to C Programming Examples</a>
+</body>
+</html>
