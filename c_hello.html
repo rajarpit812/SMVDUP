@@ -3,49 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World - C Programming</title>
+    <title>Real-Time C Compiler - SMVDUP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 20px;
-            text-align: center;
+            text-align: left;
         }
         h1 {
             color: #333;
         }
+        .editor {
+            border: 2px solid #ccc;
+            height: 300px;
+            margin-bottom: 20px;
+        }
         pre {
             background-color: #fff;
-            border: 1px solid #ccc;
+            border: 2px solid #ccc;
             padding: 10px;
             overflow-x: auto;
+            font-family: monospace;
+            line-height: 1.5;
+        }
+        button {
+            margin-top: 10px;
+        }
+        #compilerOutput {
+            background-color: #fff;
+            border: 2px solid #ccc;
+            padding: 10px;
+            min-height: 50px;
         }
     </style>
 </head>
 <body>
-    <h1>Hello World in C</h1>
-    <h2>Code:</h2>
-    <pre>
-#include <stdio.h>
-
-int main() {
-    printf("Hello, World!\n");
-    return 0;
-}
-    </pre>
-    <h2>Output:</h2>
-    <pre>
-Hello, World!
-    </pre>
+    <h1>Real-Time C Compiler</h1>
+    <h2>Edit your C Code:</h2>
+    <textarea id="code" class="editor"></textarea>
     <button onclick="runCode()">Run Code</button>
     <h2>Compiler Output:</h2>
-    <pre id="compilerOutput"></pre>
+    <div id="compilerOutput"></div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/clike/clike.min.js"></script>
     <script>
+        // Initialize CodeMirror
+        const editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            lineNumbers: true,
+            mode: "text/x-csrc",
+            theme: "default",
+            matchBrackets: true
+        });
+
         function runCode() {
-            // Here you would integrate with an online compiler API
-            document.getElementById('compilerOutput').innerText = 'Output will be displayed here...'; // Placeholder
+            const code = editor.getValue();
+            // Integrate with an online compiler API (replace with actual API endpoint)
+            fetch('https://api.example.com/compile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    code: code,
+                    language: 'c'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('compilerOutput').innerText = data.output || 'No output generated.';
+            })
+            .catch(error => {
+                document.getElementById('compilerOutput').innerText = 'Error: ' + error.message;
+            });
         }
     </script>
     <a href="c.html">Back to C Programming Examples</a>
