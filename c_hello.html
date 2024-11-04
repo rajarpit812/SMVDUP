@@ -72,40 +72,52 @@
 
         // Piston API function to compile and run code
         async function compileCode() {
-            const code = document.getElementById('codeInput').value;
+    const code = document.getElementById('codeInput').value; // Fetch the code from input section
 
-            const url = 'https://emkc.org/api/v2/piston/execute';
+    const url = 'https://emkc.org/api/v2/piston/execute';
 
-            const payload = {
-                language: 'c',
-                source: code,
-                // Add input if required
-                // input: "Your input here"
-            };
+    const payload = {
+        language: 'c',
+        version: '10.2.0',
+        files: [{
+            name: 'main.c',
+            content: code
+        }]
+    };
 
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload),
-                });
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
 
-                const result = await response.json();
+        const result = await response.json();
 
-                if (result.output) {
-                    document.getElementById('output').textContent = result.output;
-                } else if (result.error) {
-                    document.getElementById('output').textContent = `Error: ${result.error}`;
-                } else {
-                    document.getElementById('output').textContent = 'No output produced.';
-                }
-            } catch (error) {
-                document.getElementById('output').textContent = 'Error connecting to compiler!';
-                console.error('Error during compilation:', error);
-            }
-        }
+        const output = result.run.stdout.trim(); // Extract only the run output
+
+        document.getElementById('output').textContent = output; // Display clean output
+    } catch (error) {
+        document.getElementById('output').textContent = 'Error connecting to compiler!';
+        console.error('Error during compilation:', error);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // Load the initial code from GitHub on page load
         window.onload = fetchCodeFromGitHub;
