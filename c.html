@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C Programming Examples</title>
+    <!-- Include Prism.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.css" rel="stylesheet" />
+    <!-- Include Prism.js Core Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,6 +48,10 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
+        code[class*="language-"],
+        pre[class*="language-"] {
+            tab-size: 2;
+        }
     </style>
 </head>
 <body>
@@ -83,6 +91,7 @@
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.text();
+                console.log('Fetched file content:', data); // Log the file content
                 return data;
             } catch (error) {
                 console.error('Failed to fetch file content:', error);
@@ -112,7 +121,9 @@
 
                     link.onclick = async () => {
                         const fileContent = await fetchFileContent(file.download_url);
-                        contentDiv.innerHTML = `<pre>${fileContent}</pre>`;
+                        console.log('Displaying content for:', file.name); // Log the file being displayed
+                        contentDiv.innerHTML = `<pre class="language-c"><code>${fileContent}</code></pre>`;
+                        Prism.highlightAllUnder(contentDiv);
                         contentDiv.style.display = 'block';
                     };
 
