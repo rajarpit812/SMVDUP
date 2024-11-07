@@ -107,6 +107,7 @@
                     // Create a div to show the content just below the clicked link
                     const contentDiv = document.createElement('div');
                     contentDiv.className = 'file-content';
+                    listItem.appendChild(link);
                     listItem.appendChild(contentDiv);
 
                     link.onclick = async () => {
@@ -115,7 +116,6 @@
                         contentDiv.style.display = 'block';
                     };
 
-                    listItem.appendChild(link);
                     programList.appendChild(listItem);
                 }
             });
