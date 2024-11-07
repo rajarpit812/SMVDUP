@@ -32,12 +32,13 @@
         a:hover {
             text-decoration: underline;
         }
-        #file-content {
-            margin-top: 20px;
+        .file-content {
+            margin-top: 10px;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 8px;
             background-color: #fff;
+            display: none; /* Initially hidden */
         }
         pre {
             white-space: pre-wrap;
@@ -51,10 +52,6 @@
     <ul id="program-list">
         <!-- Program list will be populated here -->
     </ul>
-    <div id="file-content" style="display: none;">
-        <h2>Program Content</h2>
-        <pre id="content"></pre>
-    </div>
     <script>
         // GitHub repository details
         const repoOwner = 'rajarpit812';
@@ -106,13 +103,18 @@
                     const listItem = document.createElement('li');
                     const link = document.createElement('a');
                     link.textContent = file.name.replace('.c', '');
+
+                    // Create a div to show the content just below the clicked link
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'file-content';
+                    listItem.appendChild(contentDiv);
+
                     link.onclick = async () => {
                         const fileContent = await fetchFileContent(file.download_url);
-                        const contentDiv = document.getElementById('file-content');
-                        const contentPre = document.getElementById('content');
-                        contentPre.textContent = fileContent;
+                        contentDiv.innerHTML = `<pre>${fileContent}</pre>`;
                         contentDiv.style.display = 'block';
                     };
+
                     listItem.appendChild(link);
                     programList.appendChild(listItem);
                 }
