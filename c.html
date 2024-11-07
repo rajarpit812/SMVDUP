@@ -120,11 +120,17 @@
                     listItem.appendChild(contentDiv);
 
                     link.onclick = async () => {
-                        const fileContent = await fetchFileContent(file.download_url);
-                        console.log('Displaying content for:', file.name); // Log the file being displayed
-                        contentDiv.innerHTML = `<pre class="language-c"><code>${fileContent}</code></pre>`;
-                        Prism.highlightAllUnder(contentDiv);
-                        contentDiv.style.display = 'block';
+                        if (contentDiv.style.display === 'block') {
+                            // Hide the content if it's already visible
+                            contentDiv.style.display = 'none';
+                        } else {
+                            // Fetch and show the content if it's hidden
+                            const fileContent = await fetchFileContent(file.download_url);
+                            console.log('Displaying content for:', file.name); // Log the file being displayed
+                            contentDiv.innerHTML = `<pre class="language-c"><code>${fileContent}</code></pre>`;
+                            Prism.highlightAllUnder(contentDiv);
+                            contentDiv.style.display = 'block';
+                        }
                     };
 
                     programList.appendChild(listItem);
