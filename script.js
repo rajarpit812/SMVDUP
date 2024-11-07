@@ -1,17 +1,19 @@
 // GitHub repository details
-const repoOwner = 'rajarpit812'; // Replace with the repository owner's username
-const repoName = 'GCP'; // Replace with the repository name
-const branch = 'main'; // Replace with the branch name if different
+const repoOwner = 'rajarpit812';
+const repoName = 'GCP';
+const branch = 'main';
 
 // Fetch the repository contents from GitHub
 async function fetchRepoContents() {
     const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents?ref=${branch}`;
+    console.log(`Fetching contents from: ${apiUrl}`); // Log the API URL
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
+        console.log('Repository contents:', data); // Log the fetched data
         return data;
     } catch (error) {
         console.error('Failed to fetch repository contents:', error);
@@ -29,7 +31,7 @@ async function populateProgramList() {
         if (file.type === 'file' && file.name.endsWith('.html')) {
             const listItem = document.createElement('li');
             const link = document.createElement('a');
-            link.href = file.download_url;
+            link.href = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${file.path}`;
             link.textContent = file.name.replace('.html', '');
             listItem.appendChild(link);
             programList.appendChild(listItem);
