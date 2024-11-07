@@ -1,7 +1,7 @@
 // GitHub repository details
-const repoOwner = 'rajarpit812';
-const repoName = 'GCP';
-const branch = 'main';
+const repoOwner = 'rajarpit812'; // Replace with the repository owner's username
+const repoName = 'your-repository'; // Replace with the repository name
+const branch = 'main'; // Replace with the branch name if different
 
 // Fetch the repository contents from GitHub
 async function fetchRepoContents() {
