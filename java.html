@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Programming Examples</title>
+    <!-- Include Prism.js CSS (Using Tomorrow theme for subtle syntax coloring) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <!-- Include Prism.js Core Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.js"></script>
+    <style>
+        /* Your existing CSS styles here; no change required */
+        body { /* Example of keeping the overall look intact */ }
+        /* Additional styles for Java if needed */
+    </style>
+</head>
+<body>
+    <h1>Java Programming Examples</h1>
+    <h2>Select a Program to View</h2>
+    <ul id="program-list">
+        <!-- Program list will be populated here -->
+    </ul>
+    <script>
+        // GitHub repository details - replace with your Java repository info
+        const repoOwner = 'your-github-username'; // Replace this
+        const repoName = 'your-java-repo'; // Replace this
+        const branch = 'main'; // Replace with the correct branch name
+
+        // Fetch the repository contents from GitHub
+        async function fetchRepoContents() {
+            const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents?ref=${branch}`;
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Failed to fetch repository contents:', error);
+            }
+        }
+
+        // Fetch the file content from GitHub
+        async function fetchFileContent(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.text();
+                return data;
+            } catch (error) {
+                console.error('Failed to fetch file content:', error);
+            }
+        }
+
+        // Create list items for the files in the repository
+        async function populateProgramList() {
+            const programList = document.getElementById('program-list');
+            const repoContents = await fetchRepoContents();
+            if (!repoContents) return;
+
+            repoContents.forEach(file => {
+                if (file.type === 'file' && file.name.endsWith('.java')) { // Check for Java files
+                    const listItem = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.textContent = file.name.replace('.java', '');
+
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'file-content';
+                    listItem.appendChild(link);
+                    listItem.appendChild(contentDiv);
+
+                    link.onclick = async () => {
+                        if (contentDiv.style.display === 'block') {
+                            contentDiv.style.display = 'none';
+                        } else {
+                            const fileContent = await fetchFileContent(file.download_url);
+                            contentDiv.innerHTML = `<pre class="language-java"><code>${fileContent}</code></pre>`;
+                            Prism.highlightAllUnder(contentDiv);
+                            contentDiv.style.display = 'block';
+                        }
+                    };
+
+                    programList.appendChild(listItem);
+                }
+            });
+        }
+
+        // Populate the program list on page load
+        window.onload = populateProgramList;
+    </script>
+</body>
+</html>
