@@ -9,60 +9,105 @@
     <!-- Include Prism.js Core Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.js"></script>
     <style>
-        /* Your existing CSS styles here; no change required */
-        body { /* Example of keeping the overall look intact */ }
-        /* Additional styles for Java if needed */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 700px;
+        }
+        li {
+            margin: 15px 0;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1.2em;
+            padding: 10px 15px;
+            display: inline-block;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .file-content {
+            margin-top: 10px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #1e1e1e;
+            color: #dcdcdc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+            max-width: 700px;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+            padding: 10px;
+            overflow-x: auto;
+            font-size: 0.95em;
+        }
     </style>
 </head>
 <body>
     <h1>Java Programming Examples</h1>
     <h2>Select a Program to View</h2>
-    <ul id="program-list">
-        <!-- Program list will be populated here -->
-    </ul>
+    <ul id="program-list"></ul>
     <script>
-        // GitHub repository details - replace with your Java repository info
-        const repoOwner = 'your-github-username'; // Replace this
-        const repoName = 'your-java-repo'; // Replace this
-        const branch = 'main'; // Replace with the correct branch name
+        // GitHub repository details for the new "javafiles" repository
+        const repoOwner = rajarpit812; // Replace with your GitHub username
+        const repoName = javafiles; // Replace with your new repository name
+        const branch = 'main'; // Replace with the branch name in your "javafiles" repo
 
-        // Fetch the repository contents from GitHub
+        // Fetch repository contents
         async function fetchRepoContents() {
             const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents?ref=${branch}`;
             try {
                 const response = await fetch(apiUrl);
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Failed to fetch repository contents');
                 }
-                const data = await response.json();
-                return data;
+                return await response.json();
             } catch (error) {
-                console.error('Failed to fetch repository contents:', error);
+                console.error('Error:', error);
             }
         }
 
-        // Fetch the file content from GitHub
+        // Fetch file content
         async function fetchFileContent(url) {
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Failed to fetch file content');
                 }
-                const data = await response.text();
-                return data;
+                return await response.text();
             } catch (error) {
-                console.error('Failed to fetch file content:', error);
+                console.error('Error:', error);
             }
         }
 
-        // Create list items for the files in the repository
+        // Populate the program list
         async function populateProgramList() {
             const programList = document.getElementById('program-list');
             const repoContents = await fetchRepoContents();
             if (!repoContents) return;
 
             repoContents.forEach(file => {
-                if (file.type === 'file' && file.name.endsWith('.java')) { // Check for Java files
+                if (file.type === 'file' && file.name.endsWith('.java')) {
                     const listItem = document.createElement('li');
                     const link = document.createElement('a');
                     link.textContent = file.name.replace('.java', '');
@@ -88,7 +133,6 @@
             });
         }
 
-        // Populate the program list on page load
         window.onload = populateProgramList;
     </script>
 </body>
